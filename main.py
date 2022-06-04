@@ -1,3 +1,5 @@
+#!/usr/bin/python3.9
+
 import PySimpleGUI as sg
 import DriverMeasure
 import math
