@@ -21,7 +21,7 @@ layout = [[
             ]),
         sg.Column([
             [
-                sg.Text('Hourly Rate:', key='-hourlyRate-')
+                sg.Text('Hourly Rate:', enable_events=True, key='-hourlyRate-')
             ],
             [
                 sg.Input(key='-shortRate-', size=5)
@@ -77,33 +77,37 @@ layout = [[
 
 dm = DriverMeasure.DriverMeasure()
 
+textClick = False
+
 window = sg.Window('Picking Driver Measure Calculator', layout, size=(550, 300))
 while True:  # Event Loop=
     event, values = window.read()
     print(event, values)
-    if event == sg.WIN_CLOSED or event == 'Exit':
+    if event == sg.WIN_CLOSED or event == '-quit-':
         break
     if event == '-calculate-':
-        dm.VALUESTREAMS["Short"]["hourlyRate"] = int(values["-shortRate-"])
-        dm.VALUESTREAMS["Short"]["flats"] = int(values["-shortFlats-"])
-        dm.VALUESTREAMS["Short"]["dailyRate"] = dm.VALUESTREAMS["Short"]["hourlyRate"] * 7
-        dm.VALUESTREAMS["Short"]["crewSize"] = math.ceil(dm.VALUESTREAMS["Short"]["flats"] / dm.VALUESTREAMS["Short"]["dailyRate"])
 
-        dm.VALUESTREAMS["Medium"]["hourlyRate"] = int(values["-mediumRate-"])
-        dm.VALUESTREAMS["Medium"]["flats"] = int(values["-mediumFlats-"])
-        dm.VALUESTREAMS["Medium"]["dailyRate"] = dm.VALUESTREAMS["Medium"]["hourlyRate"] * 7
-        dm.VALUESTREAMS["Medium"]["crewSize"] = math.ceil(dm.VALUESTREAMS["Medium"]["flats"] / dm.VALUESTREAMS["Medium"]["dailyRate"])
-
-        dm.VALUESTREAMS["Long"]["hourlyRate"] = int(values["-longRate-"])
-        dm.VALUESTREAMS["Long"]["flats"] = int(values["-longFlats-"])
-        dm.VALUESTREAMS["Long"]["dailyRate"] = dm.VALUESTREAMS["Long"]["hourlyRate"] * 7
-        dm.VALUESTREAMS["Long"]["crewSize"] = math.ceil(dm.VALUESTREAMS["Long"]["flats"] / dm.VALUESTREAMS["Long"]["dailyRate"])
+        dm.generate_data("Short", int(values["-shortRate-"]), int(values["-shortFlats-"]))
+        dm.generate_data("Medium", int(values["-mediumRate-"]), int(values["-mediumFlats-"]))
+        dm.generate_data("Long", int(values["-longRate-"]), int(values["-longFlats-"]))
 
         window["-shortCrew-"].update(dm.VALUESTREAMS["Short"]["crewSize"])
         window["-mediumCrew-"].update(dm.VALUESTREAMS["Medium"]["crewSize"])
         window["-longCrew-"].update(dm.VALUESTREAMS["Long"]["crewSize"])
 
-
+    if event == '-hourlyRate-':
+        if textClick==False:
+            textClick = True
+            window['-hourlyRate-'].update("Daily Rate:")
+            window['-shortRate-'].update(dm.VALUESTREAMS["Short"]["dailyRate"])
+            window['-mediumRate-'].update(dm.VALUESTREAMS["Medium"]["dailyRate"])
+            window['-longRate-'].update(dm.VALUESTREAMS["Long"]["dailyRate"])
+        elif textClick==True:
+            textClick = False
+            window['-hourlyRate-'].update("Hourly Rate:")
+            window['-shortRate-'].update(dm.VALUESTREAMS["Short"]["hourlyRate"])
+            window['-mediumRate-'].update(dm.VALUESTREAMS["Medium"]["hourlyRate"])
+            window['-longRate-'].update(dm.VALUESTREAMS["Long"]["hourlyRate"])
 
         # change the "output" element to be the value of "input" element
         # window['-OUTPUT-'].update(values['-IN-'])

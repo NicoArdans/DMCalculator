@@ -80,6 +80,11 @@ class DriverMeasure:
 					if DriverMeasure.VALUESTREAMS[VS]["predictions"][key][2] >= DriverMeasure.VALUESTREAMS[VS]["flats"]:
 						break
 
+	def generate_data(cls, cycle, rate, units):
+		DriverMeasure.VALUESTREAMS[cycle]["hourlyRate"] = rate
+		DriverMeasure.VALUESTREAMS[cycle]["flats"] = units
+		DriverMeasure.VALUESTREAMS[cycle]["dailyRate"] = DriverMeasure.VALUESTREAMS[cycle]["hourlyRate"] * 7
+		DriverMeasure.VALUESTREAMS[cycle]["crewSize"] = math.ceil(DriverMeasure.VALUESTREAMS[cycle]["flats"] / DriverMeasure.VALUESTREAMS[cycle]["dailyRate"])
 
 	def generate_csv_file(cls):
 		pass
