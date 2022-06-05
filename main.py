@@ -1,80 +1,79 @@
 #!/usr/bin/python3.9
 
-import PySimpleGUI as sg
+import PySimpleGUI as SG
 import DriverMeasure
-import math
 from pathlib import Path
 import csv
 
-sg.theme('GrayGrayGray')  # please make your windows colorful
+SG.theme('GrayGrayGray')
 
 layout = [[
-        sg.Column([
+        SG.Column([
             [
-                sg.Text('Value Stream:')
+                SG.Text('Value Stream:')
             ],
             [
-                sg.Text('Short Cycle:')
+                SG.Text('Short Cycle:')
             ],
             [
-                sg.Text('Medium Cycle:')
+                SG.Text('Medium Cycle:')
             ],
             [
-                sg.Text('Long Cycle:')
+                SG.Text('Long Cycle:')
             ]
             ]),
-        sg.Column([
+        SG.Column([
             [
-                sg.Text('Hourly Rate:', enable_events=True, key='-hourlyRate-')
+                SG.Text('Hourly Rate:', enable_events=True, key='-hourlyRate-')
             ],
             [
-                sg.Input(key='-shortRate-', size=5)
+                SG.Input(key='-shortRate-', size=5)
             ],
             [
-                sg.Input(key='-mediumRate-', size=5)
+                SG.Input(key='-mediumRate-', size=5)
             ],
             [
-                sg.Input(key='-longRate-', size=5),
+                SG.Input(key='-longRate-', size=5),
             ]
             ]),
-        sg.Column([
+        SG.Column([
             [
-                sg.Text('Flats:')
+                SG.Text('Flats:')
             ],
             [
-                sg.Input(key='-shortFlats-', size=5)
+                SG.Input(key='-shortFlats-', size=5)
             ],
             [
-                sg.Input(key='-mediumFlats-', size=5)
+                SG.Input(key='-mediumFlats-', size=5)
             ],
             [
-                sg.Input(key='-longFlats-', size=5)
+                SG.Input(key='-longFlats-', size=5)
             ]
             ]),
-        sg.Column([
+        SG.Column([
             [
-                sg.Text('Crew:')
+                SG.Text('Crew:')
             ],
             [
-                sg.Text(key='-shortCrew-')
+                SG.Text(key='-shortCrew-')
             ],
             [
-                sg.Text(key='-mediumCrew-')
+                SG.Text(key='-mediumCrew-')
             ],
             [
-                sg.Text(key='-longCrew-')
+                SG.Text(key='-longCrew-')
             ]
             ], element_justification="center")
         ],
         [
-            sg.VPush()
+            SG.VPush()
         ],
         [
-            sg.Button('Generate Excel File', key='-generateExcel-')
+            SG.Button('Generate Excel File', key='-generateExcel-')
         ],
         [
-            sg.Button('Calculate Crew Size', key='-calculate-'),
-            sg.Button('Quit', key='-quit-')
+            SG.Button('Calculate Crew Size', key='-calculate-'),
+            SG.Button('Quit', key='-quit-')
         ]
 ]
 
@@ -84,11 +83,11 @@ dm = DriverMeasure.DriverMeasure()
 textClick = False
 dataIsGenerated = False
 
-window = sg.Window('Picking Driver Measure Calculator', layout, size=(550, 300))
-while True:  # Event Loop=
+window = SG.Window('Picking Driver Measure Calculator', layout, size=(550, 300))
+while True:
     event, values = window.read()
     print(event, values)
-    if event == sg.WIN_CLOSED or event == '-quit-':
+    if event == SG.WIN_CLOSED or event == '-quit-':
         break
     if event == '-calculate-':
 
@@ -117,15 +116,16 @@ while True:  # Event Loop=
 
     if event == '-generateExcel-':
         if not dataIsGenerated:
-            sg.popup_ok("Please Calculate Crew Size First!")
+            SG.popup_ok("Please Calculate Crew Size First!")
         elif dataIsGenerated:
-            file_path = sg.popup_get_file('Save as', no_window=True, save_as=True, file_types=(('Comma Separated Values', '*.csv'),))
+            file_path = SG.popup_get_file('Save as', no_window=True, save_as=True, file_types=(('Comma Separated'
+                                                                                                ' Values', '*.csv'),))
             if file_path:
                 dm.generate_driver_measure()
                 file = Path(file_path)
                 rows = []
                 for VS in dm.VALUESTREAMS:
-                    rows.append([str(VS)])
+                    rows.append([str(VS) + ' Cycle'])
                     rows.append(['Time', 'Target', 'Target Accumulative'])
                     for key in range(1, 11):
                         if len(dm.VALUESTREAMS[VS]["predictions"][key]) == 3:
@@ -136,7 +136,5 @@ while True:  # Event Loop=
                 with open(file, 'w') as f:
                     write = csv.writer(f)
                     write.writerows(rows)
-        # change the "output" element to be the value of "input" element
-        # window['-OUTPUT-'].update(values['-IN-'])
         pass
 window.close()
