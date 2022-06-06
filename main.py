@@ -68,9 +68,6 @@ layout = [[
             ], element_justification="center")
         ],
         [
-            SG.VPush()
-        ],
-        [
             SG.Button('Generate Excel File', key='-generateExcel-', border_width=0)
         ],
         [
@@ -85,23 +82,23 @@ dm = DriverMeasure.DriverMeasure()
 textClick = False
 dataIsGenerated = False
 
-window = SG.Window('Picking Driver Measure Calculator', layout, size=(900, 400), use_default_focus=False)
+window = SG.Window('Picking Driver Measure Calculator', layout,  use_default_focus=False)
 while True:
     event, values = window.read()
     print(event, values)
     if event == SG.WIN_CLOSED or event == '-quit-':
         break
     if event == '-calculate-':
-
-        dm.generate_data("Short", int(values["-shortRate-"]), int(values["-shortFlats-"]))
-        dm.generate_data("Medium", int(values["-mediumRate-"]), int(values["-mediumFlats-"]))
-        dm.generate_data("Long", int(values["-longRate-"]), int(values["-longFlats-"]))
-
-        window["-shortCrew-"].update(dm.VALUESTREAMS["Short"]["crewSize"])
-        window["-mediumCrew-"].update(dm.VALUESTREAMS["Medium"]["crewSize"])
-        window["-longCrew-"].update(dm.VALUESTREAMS["Long"]["crewSize"])
-        dataIsGenerated = True
-
+        if values['-shortRate-'].isnumeric() and values['-shortFlats-'].isnumeric() and values['-mediumRate-'].isnumeric() and values['-mdiumFlat-'].isnumeric() and values['-longRate-'].isnumeric() and values['-longFlats-'].isnumeric():
+            dm.generate_data("Short", int(values["-shortRate-"]), int(values["-shortFlats-"]))
+            dm.generate_data("Medium", int(values["-mediumRate-"]), int(values["-mediumFlats-"]))
+            dm.generate_data("Long", int(values["-longRate-"]), int(values["-longFlats-"]))
+            window["-shortCrew-"].update(dm.VALUESTREAMS["Short"]["crewSize"])
+            window["-mediumCrew-"].update(dm.VALUESTREAMS["Medium"]["crewSize"])
+            window["-longCrew-"].update(dm.VALUESTREAMS["Long"]["crewSize"])
+            dataIsGenerated = True
+        else:
+            SG.popup_ok('Please Enter Numeric Values!')
     if event == '-hourlyRate-':
         if not textClick:
             textClick = True
@@ -115,7 +112,6 @@ while True:
             window['-shortRate-'].update(dm.VALUESTREAMS["Short"]["hourlyRate"])
             window['-mediumRate-'].update(dm.VALUESTREAMS["Medium"]["hourlyRate"])
             window['-longRate-'].update(dm.VALUESTREAMS["Long"]["hourlyRate"])
-
     if event == '-generateExcel-':
         if not dataIsGenerated:
             SG.popup_ok("Please Calculate Crew Size First!")
