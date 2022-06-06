@@ -29,13 +29,13 @@ layout = [[
                 SG.Text('Hourly Rate:', enable_events=True, key='-hourlyRate-')
             ],
             [
-                SG.Input(default_text="36", key='-shortRate-', size=5)
+                SG.Input(default_text="36", key='-shortRate-', size=(5,1))
             ],
             [
-                SG.Input(default_text="29", key='-mediumRate-', size=5)
+                SG.Input(default_text="29", key='-mediumRate-', size=(5,1))
             ],
             [
-                SG.Input(default_text="15", key='-longRate-', size=5)
+                SG.Input(default_text="15", key='-longRate-', size=(5,1))
             ]
             ]),
         SG.Column([
@@ -43,13 +43,13 @@ layout = [[
                 SG.Text('Flats:')
             ],
             [
-                SG.Input(key='-shortFlats-', size=5)
+                SG.Input(key='-shortFlats-', size=(5,1))
             ],
             [
-                SG.Input(key='-mediumFlats-', size=5)
+                SG.Input(key='-mediumFlats-', size=(5,1))
             ],
             [
-                SG.Input(key='-longFlats-', size=5)
+                SG.Input(key='-longFlats-', size=(5,1))
             ]
             ]),
         SG.Column([
@@ -89,7 +89,7 @@ while True:
     if event == SG.WIN_CLOSED or event == '-quit-':
         break
     if event == '-calculate-':
-        if values['-shortRate-'].isnumeric() and values['-shortFlats-'].isnumeric() and values['-mediumRate-'].isnumeric() and values['-mdiumFlat-'].isnumeric() and values['-longRate-'].isnumeric() and values['-longFlats-'].isnumeric():
+        if values['-shortRate-'].isnumeric() and values['-shortFlats-'].isnumeric() and values['-mediumRate-'].isnumeric() and values['-mediumFlats-'].isnumeric() and values['-longRate-'].isnumeric() and values['-longFlats-'].isnumeric():
             dm.generate_data("Short", int(values["-shortRate-"]), int(values["-shortFlats-"]))
             dm.generate_data("Medium", int(values["-mediumRate-"]), int(values["-mediumFlats-"]))
             dm.generate_data("Long", int(values["-longRate-"]), int(values["-longFlats-"]))
@@ -123,7 +123,7 @@ while True:
                 file = Path(file_path)
                 rows = []
                 for VS in dm.VALUESTREAMS:
-                    rows.append([str(VS) + ' Cycle'])
+                    rows.append([str(VS) + ' Cycle: ' + str(dm.VALUESTREAMS[VS]['crewSize']) + ' Pickers'])
                     rows.append(['Time', 'Target', 'Target Accumulative'])
                     for key in range(1, 11):
                         if len(dm.VALUESTREAMS[VS]["predictions"][key]) == 3:
