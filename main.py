@@ -4,8 +4,10 @@ import PySimpleGUI as SG
 import DriverMeasure
 from pathlib import Path
 import csv
+import webbrowser
 
-SG.theme('GrayGrayGray')
+SG.theme('TanBlue')
+SG.set_options(font='Calibri 20')
 
 layout = [[
         SG.Column([
@@ -69,11 +71,11 @@ layout = [[
             SG.VPush()
         ],
         [
-            SG.Button('Generate Excel File', key='-generateExcel-')
+            SG.Button('Generate Excel File', key='-generateExcel-', border_width=0)
         ],
         [
-            SG.Button('Calculate Crew Size', key='-calculate-'),
-            SG.Button('Quit', key='-quit-')
+            SG.Button('Calculate Crew Size', key='-calculate-', border_width=0),
+            SG.Button('Quit', key='-quit-', border_width=0)
         ]
 ]
 
@@ -83,7 +85,7 @@ dm = DriverMeasure.DriverMeasure()
 textClick = False
 dataIsGenerated = False
 
-window = SG.Window('Picking Driver Measure Calculator', layout, size=(550, 300))
+window = SG.Window('Picking Driver Measure Calculator', layout, size=(900, 400), use_default_focus=False)
 while True:
     event, values = window.read()
     print(event, values)
@@ -136,5 +138,7 @@ while True:
                 with open(file, 'w') as f:
                     write = csv.writer(f)
                     write.writerows(rows)
+                webbrowser.open(str(file))
+            break
         pass
 window.close()
