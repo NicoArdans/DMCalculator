@@ -29,13 +29,13 @@ layout = [[
                 SG.Text('Hourly Rate:', enable_events=True, key='-hourlyRate-')
             ],
             [
-                SG.Input(key='-shortRate-', size=5)
+                SG.Input(default_text="29", key='-shortRate-', size=5)
             ],
             [
-                SG.Input(key='-mediumRate-', size=5)
+                SG.Input(default_text="24", key='-mediumRate-', size=5)
             ],
             [
-                SG.Input(key='-longRate-', size=5),
+                SG.Input(default_text="15", key='-longRate-', size=5)
             ]
             ]),
         SG.Column([
