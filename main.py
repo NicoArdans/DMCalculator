@@ -8,8 +8,23 @@ import webbrowser
 
 SG.theme('TanBlue')
 SG.set_options(font='Calibri 20')
+dm = DriverMeasure.DriverMeasure()
 
 layout = [[
+        SG.Column([
+            [
+                SG.Text('Start time:')
+             ],
+            [
+                SG.Combo(values=dm.timeList, key='-start-', size=(8))
+            ],
+            [
+                SG.Text('Finish time:')
+            ],
+            [
+                SG.Combo(values=dm.timeList, key='-finish-', size=(8))
+            ]
+            ]),
         SG.Column([
             [
                 SG.Text('Value Stream:')
@@ -76,9 +91,6 @@ layout = [[
         ]
 ]
 
-
-dm = DriverMeasure.DriverMeasure()
-
 textClick = False
 dataIsGenerated = False
 
@@ -89,10 +101,13 @@ while True:
     if event == SG.WIN_CLOSED or event == '-quit-':
         break
     if event == '-calculate-':
-        if values['-shortRate-'].isnumeric() and values['-shortFlats-'].isnumeric() and values['-mediumRate-'].isnumeric() and values['-mdiumFlat-'].isnumeric() and values['-longRate-'].isnumeric() and values['-longFlats-'].isnumeric():
-            dm.generate_data("Short", int(values["-shortRate-"]), int(values["-shortFlats-"]))
-            dm.generate_data("Medium", int(values["-mediumRate-"]), int(values["-mediumFlats-"]))
-            dm.generate_data("Long", int(values["-longRate-"]), int(values["-longFlats-"]))
+        if values['-shortRate-'].isnumeric() and values['-shortFlats-'].isnumeric() and \
+                values['-mediumRate-'].isnumeric() and values['-mediumFlats-'].isnumeric() and \
+                values['-longRate-'].isnumeric() and values['-longFlats-'].isnumeric():
+
+            dm.generate_data("Short", int(values["-shortRate-"]), int(values["-shortFlats-"]), values['-start-'], values['-finish-'])
+            dm.generate_data("Medium", int(values["-mediumRate-"]), int(values["-mediumFlats-"]), values['-start-'], values['-finish-'])
+            dm.generate_data("Long", int(values["-longRate-"]), int(values["-longFlats-"]), values['-start-'], values['-finish-'])
             window["-shortCrew-"].update(dm.VALUESTREAMS["Short"]["crewSize"])
             window["-mediumCrew-"].update(dm.VALUESTREAMS["Medium"]["crewSize"])
             window["-longCrew-"].update(dm.VALUESTREAMS["Long"]["crewSize"])
@@ -119,7 +134,7 @@ while True:
             file_path = SG.popup_get_file('Save as', no_window=True, save_as=True, file_types=(('Comma Separated'
                                                                                                 ' Values', '*.csv'),))
             if file_path:
-                dm.generate_driver_measure()
+                dm.generate_driver_measure(values['-start-'], values['-finish-'])
                 file = Path(file_path)
                 rows = []
                 for VS in dm.VALUESTREAMS:
@@ -137,4 +152,8 @@ while True:
                 webbrowser.open(str(file))
             break
         pass
+    if event == '-additions-':
+        pass
+        # popup window with dropdown list to choose start time from time_interval list
+        # use rates entered as  well as flats
 window.close()
