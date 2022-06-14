@@ -88,5 +88,5 @@ class DriverMeasure:
 		DriverMeasure.VALUESTREAMS[cycle]["hourlyRate"] = rate
 		DriverMeasure.VALUESTREAMS[cycle]["flats"] = units
 
-		DriverMeasure.VALUESTREAMS[cycle]["dailyRate"] = DriverMeasure.VALUESTREAMS[cycle]["hourlyRate"] * totalTime
+		DriverMeasure.VALUESTREAMS[cycle]["dailyRate"] = int(DriverMeasure.VALUESTREAMS[cycle]["hourlyRate"] * totalTime)
 		DriverMeasure.VALUESTREAMS[cycle]["crewSize"] = math.ceil(DriverMeasure.VALUESTREAMS[cycle]["flats"] / DriverMeasure.VALUESTREAMS[cycle]["dailyRate"])

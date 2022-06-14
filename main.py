@@ -115,7 +115,7 @@ while True:
         else:
             SG.popup_ok('Please Enter Numeric Values!')
     if event == '-hourlyRate-':
-        if not textClick:
+        if not textClick and dataIsGenerated:
             textClick = True
             window['-hourlyRate-'].update("Daily Rate:")
             window['-shortRate-'].update(dm.VALUESTREAMS["Short"]["dailyRate"])
