@@ -138,11 +138,11 @@ while True:
                 file = Path(file_path)
                 rows = []
                 for VS in dm.VALUESTREAMS:
-                    rows.append([str(VS) + ' Cycle'])
+                    rows.append([str(VS) + ' Cycle: ' + str(dm.VALUESTREAMS[VS]['crewSize'])])
                     rows.append(['Time', 'Target', 'Target Accumulative'])
                     for key in range(1, 11):
                         if len(dm.VALUESTREAMS[VS]["predictions"][key]) == 3:
-                            time_interval = str(dm.VALUESTREAMS[VS]["predictions"][key][0])
+                            time_interval = '="' + str(dm.VALUESTREAMS[VS]["predictions"][key][0]) + '"'
                             target = str(dm.VALUESTREAMS[VS]["predictions"][key][1])
                             target_accumulative = str(dm.VALUESTREAMS[VS]["predictions"][key][2])
                             rows.append([time_interval, target, target_accumulative])
