@@ -138,7 +138,7 @@ while True:
                 file = Path(file_path)
                 rows = []
                 for VS in dm.VALUESTREAMS:
-                    rows.append([str(VS) + ' Cycle: ' + str(dm.VALUESTREAMS[VS]['crewSize'])])
+                    rows.append([str(VS) + ' Cycle Crew Size: ' + str(dm.VALUESTREAMS[VS]['crewSize']) + '         Flats: ' + str(dm.VALUESTREAMS[VS]['flats'])])
                     rows.append(['Time', 'Target', 'Target Accumulative'])
                     for key in range(1, 11):
                         if len(dm.VALUESTREAMS[VS]["predictions"][key]) == 3:

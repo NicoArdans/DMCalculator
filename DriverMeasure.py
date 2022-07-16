@@ -24,6 +24,7 @@ class DriverMeasure:
 			"targetsAccumulative": []
 			}
 	INTERVALS = {
+		"6-7": 1,
 		"7-8": 1,
 		"8-9": 1,
 		"9-10": 1,
