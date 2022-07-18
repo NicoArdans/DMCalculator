@@ -58,17 +58,18 @@ class DriverMeasure:
 	def generate_driver_measure(cls, start, finish):
 		for VS in DriverMeasure.VALUESTREAMS:
 			DriverMeasure.VALUESTREAMS[VS]["predictions"] = {
-				1:["7-8"],
-				2:["8-9"],
-				3:["9-10"],
-				4:["10:20-11"],
-				5:["11-12"],
-				6:["12-1"],
-				7:["1-2"],
-				8:["2:20-3"],
-				9:["3-4"],
-				10:["4-5"],
-				11:["5-6"]
+				1:["6-7"],
+				2:["7-8"],
+				3:["8-9"],
+				4:["9-10"],
+				5:["10:20-11"],
+				6:["11-12"],
+				7:["12-1"],
+				8:["1-2"],
+				9:["2:20-3"],
+				10:["3-4"],
+				11:["4-5"],
+				12:["5-6"]
 				}
 			for key in range(DriverMeasure.timeList.index(start)+1, DriverMeasure.timeList.index(finish)+1):
 				DriverMeasure.VALUESTREAMS[VS]["predictions"][key].append(math.floor(DriverMeasure.INTERVALS[DriverMeasure.VALUESTREAMS[VS]["predictions"][key][0]]*DriverMeasure.VALUESTREAMS[VS]["hourlyRate"]* DriverMeasure.VALUESTREAMS[VS]["crewSize"]))
