@@ -138,8 +138,8 @@ while True:
                 dm.generate_driver_measure(values['-start-'], values['-finish-'])
                 file = Path(file_path)
                 rows = []
-                today = date.today() + timedelta(days=1)
-                rows.appendd(['Pick Date: ' + today.strftime("%m/%d/%Y")])
+                today = date.today() #+ timedelta(days=1)
+                rows.append(['Pick Date: ' + today.strftime("%m/%d/%Y")])
                 for VS in dm.VALUESTREAMS:
                     rows.append([str(VS) + ' Cycle Crew Size: ' + str(dm.VALUESTREAMS[VS]['crewSize']) + '         Flats: ' + str(dm.VALUESTREAMS[VS]['flats'])])
                     rows.append(['Time', 'Target', 'Target Accumulative'])
